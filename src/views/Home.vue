@@ -21,16 +21,51 @@
     <v-main>
       <v-container class="mt-5">
         <v-row>
+          <template v-for="n in 4" :key="n">
+            <v-col
+              class="mt-2"
+              cols="12"
+            >
+              <strong>Category {{ n }}</strong>
+            </v-col>
+
+            <v-col
+              v-for="j in 8"
+              :key="`${n}${j}`"
+              cols="6"
+              md="2"
+            >
+              <v-sheet height="150" elevation="4">
+                <v-container>
+                  snack... 
+                  <v-divider :thickness="4"></v-divider>
+                  ceritanya ada foto...
+
+                </v-container>
+              </v-sheet>
+            </v-col>
+          </template>
+        </v-row>
+        <!-- <v-row>
           <v-col
             v-for="n in 24"
             :key="n"
             cols="12"
             md="4"
           >
-            <v-card height="100"></v-card>
+            <v-card>
+              <v-card-title class="bg-primary">Snack</v-card-title>
+              <v-divider></v-divider>
+              <v-card-item>
+                ceritanya gambar ..
+              </v-card-item>
+              <v-divider></v-divider>
+              <v-card-actions class="flex justify-end">
+                 stok : 99
+              </v-card-actions>
+            </v-card>
           </v-col>
-          <!-- <v-btn color="">asdad</v-btn> -->
-        </v-row>
+        </v-row> -->
       </v-container>
     </v-main>
   </v-app>
