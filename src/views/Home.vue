@@ -20,68 +20,94 @@
 
     <v-main>
       <v-container class="mt-5">
-        <v-row>
-          <template v-for="n in 4" :key="n">
+        <!-- <v-row> -->
+          <!-- add category -->
+          <!-- <template v-for="n in 4" :key="n">
             <v-col
               class="mt-2"
               cols="12"
-            >
-              <strong>Category {{ n }}</strong>
-            </v-col>
+            > -->
+              <!-- <strong>Category {{ n }}</strong> -->
+            <!-- </v-col> -->
 
-            <v-col
-              v-for="j in 8"
-              :key="`${n}${j}`"
+            <!-- <v-col
+              v-for="jajan in jajanan "
+              :key="jajan.id"
               cols="6"
               md="2"
             >
-              <v-sheet height="150" elevation="4">
+              <v-sheet height="200" elevation="4">
                 <v-container>
-                  snack... 
-                  <v-divider :thickness="4"></v-divider>
+                  {{ jajan.nama }} 
+                  <v-divider :thickness="2"></v-divider>
                   ceritanya ada foto...
-
+                  <v-divider></v-divider>
+                  stock : {{ jajan.qty }}
                 </v-container>
               </v-sheet>
-            </v-col>
-          </template>
-        </v-row>
-        <!-- <v-row>
+            </v-col> -->
+          <!-- </template> -->
+        <!-- </v-row> -->
+        <v-row>
           <v-col
-            v-for="n in 24"
-            :key="n"
-            cols="12"
-            md="4"
+            v-for="jajan in jajanan_ready"
+            :key="jajan.id"
+            cols="6"
+            md="3"
           >
             <v-card>
-              <v-card-title class="bg-primary">Snack</v-card-title>
+              <v-card-title class="bg-primary">{{jajan.nama}}</v-card-title>
               <v-divider></v-divider>
               <v-card-item>
-                ceritanya gambar ..
+                <v-img
+                  height="150" src="@/assets/jajan_default.png" 
+                /> 
               </v-card-item>
               <v-divider></v-divider>
               <v-card-actions class="flex justify-end">
-                 stok : 99
+                 <b>
+                   stock : {{ jajan.qty }}
+                 </b>
               </v-card-actions>
             </v-card>
           </v-col>
-        </v-row> -->
+        </v-row>
       </v-container>
     </v-main>
   </v-app>
 </template>
 
 <script setup>
-  import { ref } from 'vue'
+import { computed } from 'vue';
+import { ref, onMounted } from 'vue'
 
-  const drawer = ref(null)
+  const drawer = ref(null);
+  const jajanan = ref('');
 
   const links = [
-    ['mdi-inbox-arrow-down', 'Menu'],
+    ['mdi-inbox-arrow-down', 'Stock'],
     ['mdi-send', 'Pre Order'],
-    ['mdi-delete', 'Trash'],
-    ['mdi-alert-octagon', 'Spam'],
+    // ['mdi-delete', 'Trash'],
+    // ['mdi-alert-octagon', 'Spam'],
   ]
+
+  onMounted(async () => {
+    try {
+      const response = await fetch('http://localhost:3001/jajan');
+      jajanan.value = await response.json();
+      // console.log(jajanan)
+    } catch (error) {
+      console.error(error);
+    }
+  })
+
+  const jajanan_ready = computed(()=> {
+    if(jajanan.value.length > 0) {
+      let data = jajanan.value.filter((data) => data.qty !== 0);
+      return data;
+    }
+  })
+  
 </script>
 
 <!-- <script>
