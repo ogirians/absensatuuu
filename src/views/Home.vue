@@ -1,23 +1,27 @@
 <template>
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer">
-      <v-list>
+      <v-list class="flex">
         <v-list-item
-          v-for="[icon, text] in links"
+          v-for="[icon, text, to] in links"
           :key="icon"
           :prepend-icon="icon"
           :title="text"
-          link
+          :to="to"
         ></v-list-item>
+        <v-divider></v-divider>
       </v-list>
+      <template v-slot:append>
+         <v-divider></v-divider>
+          <v-list-item  prepend-icon="mdi-circle" title="admin" @click="showOverlay()">
+         </v-list-item>
+      </template>
     </v-navigation-drawer>
-
     <v-app-bar>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <v-app-bar-title>Absensatuu</v-app-bar-title>
     </v-app-bar>
-
     <v-main>
       <v-container class="mt-5">
         <!-- <v-row> -->
@@ -74,26 +78,39 @@
         </v-row>
       </v-container>
     </v-main>
+    <v-overlay v-model="overlay" contained class="align-center justify-center">
+      <v-responsive class="mx-auto align-center justify-center" width="300">
+        <v-text-field v-model="password" label="password" hide-details="auto" type="password"></v-text-field>
+        
+        <!-- Use d-flex and justify-end to move the button to the right -->
+        <div class="d-flex justify-end mt-4">
+          <v-btn color="success" @click="toAdmin()">gass</v-btn>
+        </div>
+      </v-responsive>
+    </v-overlay>
   </v-app>
 </template>
 
 <script setup>
+import router from '@/router';
 import { computed } from 'vue';
 import { ref, onMounted } from 'vue'
 
   const drawer = ref(null);
   const jajanan = ref('');
+  const password = ref('');
+  const overlay = ref(false);
 
   const links = [
-    ['mdi-inbox-arrow-down', 'Stock'],
-    ['mdi-send', 'Pre Order'],
+    ['mdi-inbox-arrow-down', 'Stock', '/'],
+    ['mdi-send', 'Pre Order',''],
     // ['mdi-delete', 'Trash'],
     // ['mdi-alert-octagon', 'Spam'],
   ]
 
   onMounted(async () => {
     try {
-      const response = await fetch('http://localhost:3001/jajan');
+      const response = await fetch('http://172.9.1.157:3001/jajan');
       jajanan.value = await response.json();
       // console.log(jajanan)
     } catch (error) {
@@ -107,6 +124,16 @@ import { ref, onMounted } from 'vue'
       return data;
     }
   })
+
+  const showOverlay = () => {
+      overlay.value = true;
+  }
+
+  const toAdmin = () => {
+    if(password.value == '14045'){
+      router.push({name : 'home_admin'})
+    }
+  }
   
 </script>
 

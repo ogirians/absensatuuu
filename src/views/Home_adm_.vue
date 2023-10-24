@@ -3,11 +3,12 @@
       <v-navigation-drawer v-model="drawer">
         <v-list>
           <v-list-item
-            v-for="[icon, text] in links"
+            v-for="[icon, text,to] in links"
             :key="icon"
             :prepend-icon="icon"
             :title="text"
             link
+            :to="to"
           ></v-list-item>
         </v-list>
       </v-navigation-drawer>
@@ -79,15 +80,15 @@
     const jajanan = ref('');
   
     const links = [
-      ['mdi-inbox-arrow-down', 'Stock'],
-      ['mdi-send', 'Pre Order'],
-      ['mdi-download', 'Update Stok'],
+      ['mdi-inbox-arrow-down', 'Stock', '/'],
+      ['mdi-send', 'Pre Order',''],
+      ['mdi-download', 'Update Stok',''],
       // ['mdi-alert-octagon', ''],
     ]
   
     onMounted(async () => {
       try {
-        const response = await fetch('http://localhost:3001/jajan');
+        const response = await fetch('http://172.9.1.157:3001/jajan');
         jajanan.value = await response.json();
         // console.log(jajanan)
       } catch (error) {
