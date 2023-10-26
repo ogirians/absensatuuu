@@ -24,6 +24,7 @@
     </v-app-bar>
     <v-main>
       <v-container class="mt-5">
+        <v-text-field v-model="filter" type="text" density="compact" variant="outlined" placeholder="makaroni" label="search" clearable></v-text-field>
         <!-- <v-row> -->
           <!-- add category -->
           <!-- <template v-for="n in 4" :key="n">
@@ -60,18 +61,19 @@
             md="3"
           >
             <v-card>
-              <v-card-title class="bg-primary">{{jajan.nama}}</v-card-title>
+              <v-card-title class="bg-primary text-caption text-md-h7">{{jajan.nama}}</v-card-title>
               <v-divider></v-divider>
               <v-card-item>
                 <v-img
                   height="150" src="@/assets/jajan_default.png" 
                 /> 
+                <v-card-text class="d-flex justify-center py-0">{{  Intl.NumberFormat('id', { style: 'currency', currency: 'IDR' }).format(jajan.harga) }}</v-card-text>
               </v-card-item>
               <v-divider></v-divider>
               <v-card-actions class="flex justify-end">
-                 <b>
-                   stock : {{ jajan.qty }}
-                 </b>
+                <b>
+                  stock : {{ jajan.qty }}
+                </b>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -99,7 +101,9 @@ import { ref, onMounted } from 'vue'
   const drawer = ref(null);
   const jajanan = ref('');
   const password = ref('');
+  const filter = ref('');
   const overlay = ref(false);
+  
 
   const links = [
     ['mdi-inbox-arrow-down', 'Stock', '/'],
@@ -118,9 +122,10 @@ import { ref, onMounted } from 'vue'
     }
   })
 
+
   const jajanan_ready = computed(()=> {
     if(jajanan.value.length > 0) {
-      let data = jajanan.value.filter((data) => data.qty !== 0);
+      let data = jajanan.value.filter((data) => data.qty !== 0 && data.nama.includes(filter.value? filter.value : ''));
       return data;
     }
   })
