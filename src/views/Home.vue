@@ -125,7 +125,7 @@ import { ref, onMounted } from 'vue'
 
   const jajanan_ready = computed(()=> {
     if(jajanan.value.length > 0) {
-      let data = jajanan.value.filter((data) => data.qty !== 0 && data.nama.includes(filter.value? filter.value : ''));
+      let data = jajanan.value.filter((data) => data.qty !== 0 && data.nama.toLowerCase().includes(filter.value? filter.value.toLowerCase() : ''));
       return data;
     }
   })

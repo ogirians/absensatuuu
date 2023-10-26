@@ -176,7 +176,7 @@
     const filterJajan = computed(() => {
       if(jajanan.value.length > 0){
         let data = jajanan.value.filter((data) => {
-            return data.nama.includes(filter.value ? filter.value : '' )
+            return data.nama.toLowerCase().includes(filter.value ? filter.value.toLowerCase() : '' )
           })
         return data
       }
